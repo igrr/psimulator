@@ -243,6 +243,7 @@ struct ARMul_State {
 extern void ARMul_EmulateInit(void) ;
 extern ARMul_State *ARMul_NewState(void) ;
 extern void ARMul_Reset(ARMul_State *state) ;
+extern void ARMul_SelectProcessor(ARMul_State *state, unsigned processor);
 extern ARMword ARMul_DoProg(ARMul_State *state) ;
 extern ARMword ARMul_DoInstr(ARMul_State *state) ;
 
@@ -268,8 +269,12 @@ extern void ARMul_SetR15(ARMul_State *state, ARMword value) ;
 
 extern ARMword ARMul_GetCPSR(ARMul_State *state) ;
 extern void ARMul_SetCPSR(ARMul_State *state, ARMword value) ;
+extern void ARMul_FixCPSR(ARMul_State *state, ARMword instr, ARMword rhs) ;
 extern ARMword ARMul_GetSPSR(ARMul_State *state, ARMword mode) ;
 extern void ARMul_SetSPSR(ARMul_State *state, ARMword mode, ARMword value) ;
+extern void ARMul_FixSPSR(ARMul_State *state, ARMword instr, ARMword rhs) ;
+
+extern void ARMul_UndefInstr(ARMul_State *state,ARMword instr) ;
 
 /***************************************************************************\
 *                  Definitons of things to handle aborts                    *

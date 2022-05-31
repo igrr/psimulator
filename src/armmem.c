@@ -155,7 +155,7 @@ dram_read_word(ARMul_State *state, ARMword addr)
         if(IS_ADDR_VALID(addr))	{
 		data = state->mem.dram[__phys_to_virt(addr) >> 2];
 	} else {
-		fprintf(stderr, "Bad memory read! ADDR=0x%08x pc=0x%08x lr=0x%08X\n", addr, state->Reg[15], state->Reg[14]-4);
+		fprintf(stderr, "Bad memory read! ADDR=0x%08lx pc=0x%08lx lr=0x%08lX\n", addr, state->Reg[15], state->Reg[14]-4);
 	}
 	return data;
 }
@@ -171,7 +171,7 @@ dram_write_word(ARMul_State *state, ARMword addr, ARMword data)
 	}
 	else
 	{
-		fprintf(stderr, "Bad memory write! ADDR=0x%08x pc=0x%08x lr=0x%08X\n", addr, state->Reg[15], state->Reg[14]-4);
+		fprintf(stderr, "Bad memory write! ADDR=0x%08lx pc=0x%08lx lr=0x%08lX\n", addr, state->Reg[15], state->Reg[14]-4);
 	}
 }
 

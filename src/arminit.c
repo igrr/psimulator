@@ -17,6 +17,7 @@
 
 #include <termios.h>
 #include <unistd.h>
+#include <string.h>
 
 #include "armdefs.h"
 #include "armemu.h"

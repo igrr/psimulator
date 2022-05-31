@@ -24,6 +24,7 @@
 /* is deleted.                                                      */
 /********************************************************************/
 
+#include <stdlib.h>
 #include "bag.h"
 
 #define HASH_TABLE_SIZE 256

@@ -64,7 +64,7 @@ GetWord (ARMul_State * state, ARMword address, ARMword *data)
 		hack = 1;
 #endif
 #if 1
-		fprintf(stderr, "mmu_read_word at 0x%08x: ", address);
+		fprintf(stderr, "mmu_read_word at 0x%08lx: ", address);
 		switch(fault) {
 		case ALIGNMENT_FAULT:
 			fprintf(stderr, "ALIGNMENT_FAULT");
@@ -87,7 +87,7 @@ GetWord (ARMul_State * state, ARMword address, ARMword *data)
 		default:
 			fprintf(stderr, "Unrecognized fault number!");
 		}
-		fprintf(stderr, "\tpc = 0x%08x\n", state->Reg[15]);
+		fprintf(stderr, "\tpc = 0x%08lx\n", state->Reg[15]);
 #endif
 	}
 	return fault;
@@ -105,7 +105,7 @@ PutWord (ARMul_State * state, ARMword address, ARMword data)
 	fault = mmu_write_word(state, address, data);
 	if (fault) {
 #if 1
-		fprintf(stderr, "mmu_write_word at 0x%08x: ", address);
+		fprintf(stderr, "mmu_write_word at 0x%08lx: ", address);
 		switch(fault) {
 		case ALIGNMENT_FAULT:
 			fprintf(stderr, "ALIGNMENT_FAULT");
@@ -128,7 +128,7 @@ PutWord (ARMul_State * state, ARMword address, ARMword data)
 		default:
 			fprintf(stderr, "Unrecognized fault number!");
 		}
-		fprintf(stderr, "\tpc = 0x%08x\n", state->Reg[15]);
+		fprintf(stderr, "\tpc = 0x%08lx\n", state->Reg[15]);
 #endif
 	}
 	return fault;
