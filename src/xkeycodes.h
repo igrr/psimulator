@@ -1,0 +1,57 @@
+#define XKC_ESC		9
+#define XKC_AE01	10
+#define XKC_AE02	11
+#define XKC_AE03	12
+#define XKC_AE04	13
+#define XKC_AE05	14
+#define XKC_AE06	15
+#define XKC_AE07	16
+#define XKC_AE08	17
+#define XKC_AE09	18
+#define XKC_AE10	19
+#define XKC_BKSP	22
+
+#define XKC_AD01	24
+#define XKC_AD02	25
+#define XKC_AD03	26
+#define XKC_AD04	27
+#define XKC_AD05	28
+#define XKC_AD06	29
+#define XKC_AD07	30
+#define XKC_AD08	31
+#define XKC_AD09	32
+#define XKC_AD10	33
+#define XKC_RTRN	36
+
+#define XKC_TAB		23
+#define XKC_AC01	38
+#define XKC_AC02	39
+#define XKC_AC03	40
+#define XKC_AC04	41
+#define XKC_AC05	42
+#define XKC_AC06	43
+#define XKC_AC07	44
+#define XKC_AC08	45
+#define XKC_AC09	46
+#define XKC_AC10	47
+
+#define XKC_LFSH	50
+#define XKC_AB01	52
+#define XKC_AB02	53
+#define XKC_AB03	54
+#define XKC_AB04	55
+#define XKC_AB05	56
+#define XKC_AB06	57
+#define XKC_AB07	58
+#define XKC_AC11	48
+#define XKC_UP		98
+#define XKC_RTSH	62
+
+#define XKC_LCTL	37
+#define XKC_LWIN	115
+#define XKC_LALT	64
+#define XKC_SPCE	65
+#define XKC_AB10	61
+#define XKC_LEFT	100
+#define XKC_DOWN	104
+#define XKC_RGHT	102
