@@ -8,7 +8,7 @@
             "name": "(gdb) Launch psimulator",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}/src/psimulator",
+            "program": "${workspaceFolder}/build/psimulator",
             "args": [],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}/src",

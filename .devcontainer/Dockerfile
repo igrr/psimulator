@@ -9,6 +9,8 @@ RUN dpkg --add-architecture i386 \
     && apt-get update && export DEBIAN_FRONTEND=noninteractive \
     && apt-get -y install --no-install-recommends \
         make \
+        cmake \
+        ninja-build \
         gcc \
         g++ \
         gcc-multilib \
