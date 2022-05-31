@@ -19,6 +19,7 @@
 */
 #include <sys/types.h>
 #include <sys/stat.h>
+#include <stdbool.h>
 #include <fcntl.h>
 #include "armdefs.h"
 
@@ -148,11 +149,28 @@ _write_word(ARMul_State *state, ARMword addr, ARMword data)
 /* Physical DRAM is aliased throughout the DRAM bank, 
    i.e. the high address bits are not decoded. */
 
+static inline bool IS_ADDR_VALID(ARMword addr)
+{
+	/* Allow aliased memory access, since EPOC uses this early at boot
+	 * to figure out the memory layout.
+	 */
+	return true;
+}
+
+static inline ARMword __phys_to_virt(ARMword addr)
+{
+	ARMword mask_4mb = 0x3fffff;
+	ARMword lowpart = addr & mask_4mb;
+	ARMword bank = (addr >> 28) & 1;
+	ARMword virt_addr = lowpart + (bank << 22);
+	return virt_addr;
+}
+
 ARMword
 dram_read_word(ARMul_State *state, ARMword addr)
 {
 	ARMword data = 0xFFFFFFFF;
-        if(IS_ADDR_VALID(addr))	{
+	if(IS_ADDR_VALID(addr))	{
 		data = state->mem.dram[__phys_to_virt(addr) >> 2];
 	} else {
 		fprintf(stderr, "Bad memory read! ADDR=0x%08lx pc=0x%08lx lr=0x%08lX\n", addr, state->Reg[15], state->Reg[14]-4);
@@ -163,7 +181,7 @@ dram_read_word(ARMul_State *state, ARMword addr)
 void
 dram_write_word(ARMul_State *state, ARMword addr, ARMword data)
 {
-        if(IS_ADDR_VALID(addr))	{
+	if(IS_ADDR_VALID(addr))	{
 		state->mem.dram[__phys_to_virt(addr) >> 2] = data;
 		if (addr < state->io.lcd_limit) {
 			lcd_write(state, addr, data);

@@ -26,47 +26,6 @@
 #define ROM_BANKS	(1)
 #define ROM_BITS	(28)			/* 0x10000000 each bank */
 
-/*
- *  Psion Series 5 physical memory map
- *
- *  0xc0000000 size 512k
- *  0xc0100000 size 512k
- *  0xc0400000 size 512k
- *  0xc0500000 size 512k
- *  0xc1000000 size 512k
- *  0xc1100000 size 512k
- *  0xc1400000 size 512k
- *  0xc1500000 size 512k
- *  0xd0000000 size 512k
- *  0xd0100000 size 512k
- *  0xd0400000 size 512k
- *  0xd0500000 size 512k
- *  0xd1000000 size 512k
- *  0xd1100000 size 512k
- *  0xd1400000 size 512k
- *  0xd1500000 size 512k
- *
- *  phys addr bits: 110n 000n 0n0n 0xxx xxxx xxxx xxxx xxxx
- *  dram addr bits: 1100 0000 0nnn nxxx xxxx xxxx xxxx xxxx
- */
-
-#define IS_ADDR_VALID(x)        (!((x) & 0x2ea80000))
-
-#define __virt_to_phys(x)	(((x) & 0x0007ffff) | \
-				(((x) & 0x00400000) << 6) | \
-				(((x) & 0x00200000) << 3) | \
-				(((x) & 0x00100000) << 2) | \
-				(((x) & 0x00080000) << 1) | \
-				0xc0000000)
-
-#define __phys_to_virt(x)	(((x) & 0x0007ffff) | \
-				(((x) & 0x10000000) >> 6) | \
-				(((x) & 0x01000000) >> 3) | \
-				(((x) & 0x00400000) >> 2) | \
-				(((x) & 0x00100000) >> 1))
-
-
-
 typedef struct mem_state_t {
 	ARMword *	dram;
 	ARMword *	rom[ROM_BANKS];
