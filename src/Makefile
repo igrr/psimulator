@@ -42,7 +42,7 @@ INSTALL_DATA = ${INSTALL} -m 644
 
 CC = gcc
 CC_FOR_BUILD = $(CC)
-CFLAGS = -g -O2 -I/usr/X11R6/include -DDEFAULT_INLINE=0
+CFLAGS = -g -Og -ggdb -m32 -I/usr/X11R6/include -DDEFAULT_INLINE=0
 
 AR = ar
 AR_FLAGS = rc
@@ -66,11 +66,12 @@ OBJS = \
 
 
 LIBS = -lnsl  -L/usr/lib -L/usr/X11R6/lib -rdynamic -ldl -lXext -lX11 -lm
+LDFLAGS = -ggdb -m32
 
 all: psimulator
 
 psimulator: $(OBJS)
-	$(CC) $(CFLAGS) -o psimulator $(OBJS) $(LIBS)
+	$(CC) $(CFLAGS) -o psimulator $(OBJS) $(LIBS) $(LDFLAGS)
 
 # Support targets.
 
