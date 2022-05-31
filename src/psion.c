@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <stdarg.h>
-#include <bfd.h>
 #include <signal.h>
 #include <getopt.h>
 #include <termios.h>
