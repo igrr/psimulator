@@ -35,6 +35,7 @@ typedef struct io_state_t {
 	ARMword		pallsw;			/* palette LSW */
 	ARMword		palmsw;			/* palette MSW */
 	ARMword		lcd_limit;		/* 0xc0000000 <= LCD buffer < lcd_limit */
+    ARMword     last_syncio_req;  /* last value written to SYNCIO */
 } io_state_t;
 
 

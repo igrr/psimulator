@@ -67,7 +67,7 @@ void
 io_reset(ARMul_State *state)
 {
 	state->io.syscon = 0;
-	state->io.sysflg = URXFE;
+	state->io.sysflg = URXFE | DCDET;
 	state->io.intmr = 0;
 	state->io.intsr = UTXINT;	/* always ready to transmit */
 	state->io.tcd[0] = 0xffff;
@@ -114,12 +114,12 @@ io_do_cycle(ARMul_State *state)
 		if (state->io.sysflg & URXFE) {
 			char c;
 			
-			if (0 < read(0, &c, 1)) {
-				state->io.uartdr = c;
-				state->io.sysflg &= ~URXFE;
-				state->io.intsr |= URXINT;
-				update_int(state);
-			}
+			// if (0 < read(0, &c, 1)) {
+			// 	state->io.uartdr = c;
+			// 	state->io.sysflg &= ~URXFE;
+			// 	state->io.intsr |= URXINT;
+			// 	update_int(state);
+			// }
 		}
 		/* keep the UI alive */
 		lcd_cycle(state);
@@ -185,9 +185,25 @@ io_read_word(ARMul_State *state, ARMword addr)
 		break;
 //	case UBRLCR:		*
 	case SYNCIO:
+		printf("SYNCIO: req=0x%4lx\n", state->io.last_syncio_req);
+		switch (state->io.last_syncio_req & 0xFF) {
+		case 0xC1: // DigitiserX
+			data = 305; // (touchX * 8) + 
+		case 0x81: // DigitiserY
+			data = 680; // (touchY * 13.53)
+		case 0x91: // MainBattery
+			data = 3000;
+		case 0xD1: // BackupBattery
+			data = 3100;
+		case 0xA1: // Reference
+			data = 1000;
+        case 0xF1: // Unknown
+            data = 3000;
+        case 0x0c: // Unknown
+            data = 1000;
+		}
 		/* if we return zero here, the battery voltage calculation
 		   results in a divide-by-zero that messes up the kernel */
-		data = 1;
 		break;
 	case PALLSW:
 		data = state->io.pallsw;
@@ -206,10 +222,12 @@ io_read_word(ARMul_State *state, ARMword addr)
 	case COEOI:
 	case HALT:
 	case STDBY:
+		printf("io_read_word(0x%08lx) (write-only!)\n", addr);
 		break;
 
 	default:
-//		printf("io_read_word(0x%08x) = 0x%08x\n", addr, data);
+		printf("io_read_word(0x%08lx) = 0x%08lx\n", addr, data);
+		break;
 	}
 	return data;
 }
@@ -233,7 +251,10 @@ io_write_word(ARMul_State *state, ARMword addr, ARMword data)
 	case SYSCON:
 		tmp = state->io.syscon;
 		state->io.syscon = data;
+		printf("Write SYSCON: %04lx\n", data);
 		if ((tmp & LCDEN) != (data & LCDEN)) {
+			printf("LCD Enable!\n");
+			abort();
 			update_lcd(state);
 		}
 //		printf("SYSCON = 0x%08x\n", data);
@@ -270,10 +291,13 @@ io_write_word(ARMul_State *state, ARMword addr, ARMword data)
 	case UARTDR:
 		/* The UART writes chars to console */
 		printf("%c", (char)data);
+		abort();
 		fflush(stdout);
 		break;
 //	case UBRLCR:		*
-//	case SYNCIO:		*
+	case SYNCIO:
+		state->io.last_syncio_req = data & 0xffff;
+		break;
 	case PALLSW:
 		tmp = state->io.pallsw;
 		state->io.pallsw = data;
@@ -304,14 +328,16 @@ io_write_word(ARMul_State *state, ARMword addr, ARMword data)
 //	case RTCEOI:
 //	case UMSEOI:
 //	case COEOI:
-//	case HALT:
+	case HALT:
+		break;
 //	case STDBY:
 	case 0x2000:
 		/* Not a real register, for debugging only: */
 		printf("io_write_word debug: 0x%08lx\n", data);
 		break;
 	default:
-//		printf("io_write_word(0x%08x, 0x%08x)\n", addr, data);
+		printf("io_write_word(0x%08lx, 0x%08lx)\n", addr, data);
+		break;
 	}
 }
 

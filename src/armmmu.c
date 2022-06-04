@@ -345,11 +345,11 @@ mmu_mcr(ARMul_State *state, ARMword instr, ARMword value)
 	switch (creg) {
 	case MMU_CONTROL:
 		state->mmu.control = (value | 0x70) & 0x3FF;
-//		fprintf(stderr,"mmu_mcr wrote CONTROL      %08x\n",state->mmu.control);
+		fprintf(stderr,"mmu_mcr wrote CONTROL      %08lx\n",state->mmu.control);
 		break;
 	case MMU_TRANSLATION_TABLE_BASE:
 		state->mmu.translation_table_base = value & 0xFFFFC000;
-//		fprintf(stderr,"mmu_mcr wrote TTB          %08x\n",state->mmu.translation_table_base);
+		fprintf(stderr,"mmu_mcr wrote TTB          %08lx\n",state->mmu.translation_table_base);
 		break;
 	case MMU_DOMAIN_ACCESS_CONTROL:
 //		printf("mmu_mcr wrote DACR         ");
@@ -379,15 +379,15 @@ mmu_mcr(ARMul_State *state, ARMword instr, ARMword value)
 		break;
 #else
 	case MMU_V3_FLUSH_TLB:
-//		printf("mmu_mcr wrote FLUSH_TLB    ");
+		printf("mmu_mcr wrote FLUSH_TLB    ");
 		mmu_tlb_invalidate_all(state);
 		break;
 	case MMU_V3_FLUSH_TLB_ENTRY:
-//		printf("mmu_mcr wrote FLUSH_TLB_ENTRY");
+		printf("mmu_mcr wrote FLUSH_TLB_ENTRY");
 		mmu_tlb_invalidate_entry(state, value);
 		break;
 	case MMU_V3_FLUSH_CACHE:
-//		printf("mmu_mcr wrote FLUSH_CACHE    ");
+		printf("mmu_mcr wrote FLUSH_CACHE    ");
 		mmu_cache_invalidate(state);
 		break;
 #endif
@@ -395,7 +395,7 @@ mmu_mcr(ARMul_State *state, ARMword instr, ARMword value)
 		printf("mmu_mcr wrote UNKNOWN - reg %d\n", creg);
 		break;
 	}
-//	printf("\t\t\t\tpc = 0x%08x\n", state->Reg[15]);
+	printf("\t\t\t\tpc = 0x%08lx\n", state->Reg[15]);
 }
 
 
